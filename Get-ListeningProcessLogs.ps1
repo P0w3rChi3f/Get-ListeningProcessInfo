@@ -31,28 +31,16 @@ function Get-ListeningProcessLogs {
     # To properly filter the EventLogs, we need the hex value of the listening process. This section of the code formats the hex version of the Process ID then takes the hex value and grabs the corresponding event logs.
     $ListeningLogs = @()
 
-<<<<<<< HEAD
-    if ($PSVersionTable.PSVersion.Major -gt 5)
-=======
     if ($PSVersionTable.PSVersion.Major -gt 5) {
->>>>>>> 39cbe8d344770ed3c72f3beae5f516cf8c1ef353
         foreach ($process in $ListeningProcess) { 
             $hexProcess = ('0x{0:X}' -f [convert]::ToString($process.ProcessID,16)) 
             $ListeningLogs += Get-WinEvent -FilterHashtable @{LogName="Security"; ID="4688"; 'NewProcessID'= $hexProcess } -ErrorAction SilentlyContinue
         }
-<<<<<<< HEAD
     else {
         foreach ($process in $ListeningProcess) { 
             $hexProcess = ('0x{0:X}' -f [convert]::ToString($process.ProcessID,16))
             $ListeningLogs += Get-WinEvent -LogName Security -FilterXPath "*[System[EventID=4688] and EventData[Data[@Name='NewProcessID']='$hexProcess']]"
-=======
-    }
-    else {
-        foreach ($process in $ListeningProcess) { 
-            $hexProcess = ('0x{0:X}' -f [convert]::ToString($process.ProcessID,16))
-            $ListeningLogs += Get-WinEvent -LogName Security -FilterXPath "*[System[EventID=4688] and EventData[Data[@Name='NewProcessID']='$hexProcess']]" -ErrorAction SilentlyContinue
         }
->>>>>>> 39cbe8d344770ed3c72f3beae5f516cf8c1ef353
     }
 
     Write-Verbose "Converting the xml logs to an object"
@@ -151,6 +139,7 @@ function Get-ListeningProcessLogs {
     }
 
     $ProcessInfo
+    }
 }
 
 Get-ListeningProcessLogs
